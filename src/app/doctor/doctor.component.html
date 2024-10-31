@@ -1,0 +1,75 @@
+<app-navbar></app-navbar>
+
+<div class="card">
+  <p-table [value]="doctores" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Especialidad</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-doc>
+      <tr>
+        <td>{{ doc.id }}</td>
+      <td>{{ doc.nombre || 'jorge' }}</td>
+      <td>{{ doc.apellido || 'tato' }}</td>
+      <td>{{ doc.especialidad?.nombre || 'Sin especialidad' }}</td>
+        <td>
+          <div class="card flex justify-content-center">
+            <p-button label="Editar" (click)="abrirDialogoEditar(doc)" icon="pi pi-pencil"></p-button>
+            <p-button label="Eliminar" (click)="eliminarDoctor(doc.id)" icon="pi pi-trash" class="p-button-danger"></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog header="Editar Doctor" [(visible)]="isDialogVisible" [modal]="true" [closable]="true" [style]="{width: '300px'}">
+    <div class="field">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" [(ngModel)]="doctorSeleccionado.nombre" pInputText />
+    </div>
+    <div class="field">
+      <label for="apellido">Apellido</label>
+      <input id="apellido" type="text" [(ngModel)]="doctorSeleccionado.apellido" pInputText />
+    </div>
+    <div class="field">
+      <label for="especialidad">Especialidad</label>
+      <select id="especialidad" [(ngModel)]="doctorSeleccionado.especialidad" class="p-inputtext">
+        <option *ngFor="let especialidad of especialidades" [ngValue]="especialidad">{{ especialidad.nombre }}</option>
+      </select>
+    </div>
+    <p-footer>
+      <button pButton label="Guardar" icon="pi pi-check" (click)="guardarCambios()" class="p-button-success"></button>
+      <button pButton label="Cancelar" icon="pi pi-times" (click)="isDialogVisible=false" class="p-button-secondary"></button>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Agregar Nuevo Doctor" [(visible)]="isAddDialogVisible" [modal]="true" [closable]="true" [style]="{width: '300px'}">
+    <div class="field">
+      <label for="nombreNuevo">Nombre</label>
+      <input id="nombreNuevo" type="text" [(ngModel)]="nuevoDoctor.nombre" pInputText />
+    </div>
+    <div class="field">
+      <label for="apellidoNuevo">Apellido</label>
+      <input id="apellidoNuevo" type="text" [(ngModel)]="nuevoDoctor.apellido" pInputText />
+    </div>
+    <div class="field">
+      <label for="especialidad">Especialidad</label>
+      <select id="especialidad" [(ngModel)]="nuevoDoctor.especialidad" class="p-inputtext">
+        <option *ngFor="let especialidad of especialidades" [ngValue]="especialidad">{{ especialidad.nombre }}</option>
+      </select>
+    </div>
+    <p-footer>
+      <button pButton label="Agregar" icon="pi pi-check" (click)="agregarDoctor()" class="p-button-success"></button>
+      <button pButton label="Cancelar" icon="pi pi-times" (click)="isAddDialogVisible=false" class="p-button-secondary"></button>
+    </p-footer>
+  </p-dialog>
+</div>
+
+<div class="mb-3">
+  <p-button label="Agregar Doctor" icon="pi pi-plus" (click)="abrirDialogoAgregar()"></p-button>
+</div>
